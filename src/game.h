@@ -11,10 +11,13 @@ public:
 	bool init();
 	void free();
 	void render();
+	void handleEvent(SDL_Event& e);
+	void addMino(Mino mino);
 
 private:
 	Ui ui;
-	std::list<Mino> minos;
+	Mino activeMino;
+	std::list<Mino> lockedMinos;
 };
 
 #endif

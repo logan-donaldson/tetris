@@ -9,7 +9,6 @@ public:
 	Ui();
 	~Ui();
 	bool init();
-	void renderRect(int x, int y, int w, int h);
 	void renderUI();
 	void free();
 	int getCurScore();

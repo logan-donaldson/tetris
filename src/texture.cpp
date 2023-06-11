@@ -27,7 +27,6 @@ void Texture::free() {
 
 bool Texture::loadFromFile(std::string path) {
 	this->free();
-	SDL_Texture* newTexture = nullptr;
 
 	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
 	if (!loadedSurface) {
@@ -36,7 +35,7 @@ bool Texture::loadFromFile(std::string path) {
 	}
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
 
-	this->sdlTexture = SDL_CreateTextureFromSurface(Global::renderer, loadedSurface);
+	this->sdlTexture = Global::renderer->createTextureFromSurface(loadedSurface);
 	if (!this->sdlTexture) {
 		std::cout << std::format("Unable to create texture from {}! SDL Error: {}\n", path.c_str(), SDL_GetError());
 		return false;
@@ -57,7 +56,7 @@ bool Texture::loadFromRenderedText(std::string textureText, SDL_Color textColor,
 		return false;
 	}
 
-	this->sdlTexture = SDL_CreateTextureFromSurface(Global::renderer, textSurface);
+	this->sdlTexture = Global::renderer->createTextureFromSurface(textSurface);
 	if (!this->sdlTexture) {
 		std::cout << std::format("Unable to create texture from rendered text! SDL Error: {}\n", SDL_GetError());
 		return false;
@@ -88,7 +87,7 @@ void Texture::render(int x, int y, SDL_Rect* clip, double angle, SDL_Point* cent
 		renderQuad.w = clip->w;
 		renderQuad.h = clip->h;
 	}
-	SDL_RenderCopyEx(Global::renderer, this->sdlTexture, clip, &renderQuad, angle, center, flip);
+	Global::renderer->renderCopyEx(this->sdlTexture, clip, &renderQuad, angle, center, flip);
 }
 
 int Texture::getWidth() { return this->width; }

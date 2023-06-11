@@ -3,24 +3,32 @@
 
 #include <list>
 #include <utility>
+#include <vector>
 
 class Mino {
 public:
+	Mino();
 	Mino(char shape);
 	~Mino();
 	
 	void render();
 
-	std::list<std::pair<int, int>>* getCoords();
-	int getNumCoords();
 	bool getFrozen();
+	char getShape();
+	std::pair<int, int> getLocation();
+	std::vector<std::vector<bool>> getLayout();
 
-	void rotate();
+	Mino rotate(bool clockwise);
 	void lower();
 
 private:
-	std::list<std::pair<int, int>> coords;
 	bool frozen;
+	char shape;
+	std::pair<int, int> location;
+	std::vector<std::vector<bool>> layout;
+
+	void rotateHelper();
+	
 
 };
 

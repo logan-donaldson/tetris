@@ -22,13 +22,14 @@ bool init() {
 	Global::window = new Window();
 	if (!Global::window->init()) return false;
 
-	Global::renderer = Global::window->createRenderer();
+	Global::renderer = new Renderer();
+	Global::renderer->setSDLRenderer(Global::window->createRenderer());
 	if (!Global::renderer) {
 		std::cout << std::format("Renderer could not be created! SDL Error: {}\n", SDL_GetError());
 		return false;
 	}
-	SDL_SetRenderDrawColor(Global::renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-	SDL_RenderSetLogicalSize(Global::renderer, Global::INIT_WINDOW_WIDTH, Global::INIT_WINDOW_HEIGHT);
+	Global::renderer->setDrawColor(0xFF, 0xFF, 0xFF, 0xFF);
+	Global::renderer->setLogicalSize(Global::INIT_WINDOW_WIDTH, Global::INIT_WINDOW_HEIGHT);
 
 	int imgFlags = IMG_INIT_PNG;
 	if (!(IMG_Init(imgFlags) & imgFlags)) {
@@ -51,11 +52,13 @@ void clean() {
 	Global::window->free();
 	delete Global::window;
 
-	SDL_DestroyRenderer(Global::renderer);
+	Global::renderer->free();
+	delete Global::renderer;
 
 	Global::game->free();
 	delete Global::game;
 
+	Global::window = nullptr;
 	Global::renderer = nullptr;
 	Global::game = nullptr;
 

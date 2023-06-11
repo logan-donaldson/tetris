@@ -59,10 +59,10 @@ void Window::handleEvent(SDL_Event& e) {
             case SDL_WINDOWEVENT_SIZE_CHANGED:
                 this->width = e.window.data1;
                 this->height = e.window.data2;
-                SDL_RenderPresent(Global::renderer);
+                Global::renderer->renderPresent();
                 break;
             case SDL_WINDOWEVENT_EXPOSED:
-                SDL_RenderPresent(Global::renderer);
+                Global::renderer->renderPresent();
                 break;
             case SDL_WINDOWEVENT_ENTER:
                 this->mouseFocus = true;

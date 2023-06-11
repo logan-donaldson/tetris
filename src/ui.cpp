@@ -60,16 +60,10 @@ int Ui::getCurScore() {
 	return this->curScore;
 }
 
-void Ui::renderRect(int x, int y, int w, int h) {
-	SDL_Rect outlineRect = { x, y, w, h };
-	SDL_SetRenderDrawColor(Global::renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-	SDL_RenderDrawRect(Global::renderer, &outlineRect);
-}
-
 void Ui::renderUI() {
-	renderRect(Global::Global::BUFFER, Global::BUFFER, 10*Global::BLOCK_SIZE, 20*Global::BLOCK_SIZE);
-	renderRect(20 + (10*Global::BLOCK_SIZE) + Global::BUFFER, Global::BUFFER, 100, 100);
-	renderRect(20 + (10 * Global::BLOCK_SIZE) + Global::BUFFER, Global::BUFFER + 100 + Global::BUFFER, 100, 200);
+	Global::renderer->renderRect(Global::Global::BUFFER, Global::BUFFER, 10*Global::BLOCK_SIZE, 20*Global::BLOCK_SIZE, false);
+	Global::renderer->renderRect(20 + (10*Global::BLOCK_SIZE) + Global::BUFFER, Global::BUFFER, 100, 100, false);
+	Global::renderer->renderRect(20 + (10 * Global::BLOCK_SIZE) + Global::BUFFER, Global::BUFFER + 100 + Global::BUFFER, 100, 200, false);
 	scoreText.render(Global::BUFFER + (10 * Global::BLOCK_SIZE) + Global::BUFFER + 4, Global::BUFFER + 1);
 	nextText.render(Global::BUFFER + (10 * Global::BLOCK_SIZE) + Global::BUFFER + 13, Global::BUFFER + 100 + Global::BUFFER + 2);
 	int letterBuffer{ 0 };

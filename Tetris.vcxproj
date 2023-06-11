@@ -19,22 +19,24 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="mino.cpp" />
-    <ClCompile Include="texture.cpp" />
-    <ClCompile Include="ui.cpp" />
-    <ClCompile Include="util.cpp" />
-    <ClCompile Include="window.cpp" />
+    <ClCompile Include="src\game.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\mino.cpp" />
+    <ClCompile Include="src\renderer.cpp" />
+    <ClCompile Include="src\texture.cpp" />
+    <ClCompile Include="src\ui.cpp" />
+    <ClCompile Include="src\util.cpp" />
+    <ClCompile Include="src\window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="game.h" />
-    <ClInclude Include="main.h" />
-    <ClInclude Include="mino.h" />
-    <ClInclude Include="texture.h" />
-    <ClInclude Include="ui.h" />
-    <ClInclude Include="util.h" />
-    <ClInclude Include="window.h" />
+    <ClInclude Include="src\game.h" />
+    <ClInclude Include="src\main.h" />
+    <ClInclude Include="src\mino.h" />
+    <ClInclude Include="src\renderer.h" />
+    <ClInclude Include="src\texture.h" />
+    <ClInclude Include="src\ui.h" />
+    <ClInclude Include="src\util.h" />
+    <ClInclude Include="src\window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

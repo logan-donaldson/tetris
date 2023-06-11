@@ -8,7 +8,7 @@
 #include "ui.h"
 
 Window* Global::window{nullptr};
-SDL_Renderer* Global::renderer{nullptr};
+Renderer* Global::renderer{nullptr};
 Game* Global::game{nullptr};
 
 int main(int argc, char* argv[]) { 
@@ -22,11 +22,11 @@ int main(int argc, char* argv[]) {
 		while (SDL_PollEvent(&e)) {
 			if (e.type == SDL_QUIT) quit = true;
 			Global::window->handleEvent(e);
+			if (!Global::window->getMinimized()) {
+				Global::game->handleEvent(e);
+				Global::game->render();
+			}
 		}
-		if (!Global::window->getMinimized()) {
-			Global::game->render();
-		}
-		std::cout << "Break";
 	}
 
 	clean();
