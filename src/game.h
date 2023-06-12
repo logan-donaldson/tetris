@@ -13,6 +13,7 @@ public:
 	void render();
 	void handleEvent(SDL_Event& e);
 	void addMino(Mino mino);
+	Mino& getActiveMino();
 
 private:
 	Ui ui;

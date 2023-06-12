@@ -7,6 +7,10 @@
 #include "window.h"
 #include "util.h"
 
+Uint32 dropCallback(Uint32 interval, void* param) {
+	Global::game->getActiveMino().translate('D');
+	return Global::dropRate;
+}
 
 bool init() {
 

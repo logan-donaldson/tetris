@@ -34,10 +34,16 @@ Mino::Mino(char shape) {
 			break;
 		case 'L':
 			break;
+		default:
+			break;
 	}
 }
 
 Mino::~Mino() { }
+
+std::pair<int, int> Mino::getLocation() {
+	return this->location;
+}
 
 void Mino::render() {
 	for (size_t i = 0; i < this->layout.size(); ++i) {
@@ -71,6 +77,23 @@ Mino Mino::rotate(bool clockwise) {
 		this->rotateHelper();
 		this->rotateHelper();
 		this->rotateHelper();
+	}
+	return *this;
+}
+
+Mino Mino::translate(char dir) {
+	switch (dir) {
+		case 'L':
+			this->location.first -= 1;
+			break;
+		case 'R':
+			this->location.first += 1;
+			break;
+		case 'D':
+			this->location.second += 1;
+			break;
+		default:
+			break;
 	}
 	return *this;
 }

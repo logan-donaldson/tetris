@@ -4,6 +4,7 @@
 #include <list>
 #include <utility>
 #include <vector>
+#include <atomic>
 
 class Mino {
 public:
@@ -19,7 +20,7 @@ public:
 	std::vector<std::vector<bool>> getLayout();
 
 	Mino rotate(bool clockwise);
-	void lower();
+	Mino translate(char dir);
 
 private:
 	bool frozen;
@@ -28,8 +29,6 @@ private:
 	std::vector<std::vector<bool>> layout;
 
 	void rotateHelper();
-	
-
 };
 
 #endif
