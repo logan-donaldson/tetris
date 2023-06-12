@@ -1,11 +1,14 @@
 #include "main.h"
 #include "game.h"
 #include "ui.h"
+#include "spawner.h"
 #include <iostream>
 
 Game::Game() {
-	this->activeMino = Mino('I');
+	this->activeMino = this->spawnMino();
+	this->nextMino = this->spawnMino();
 	this->ui = Ui();
+	this->spawner = Spawner();
 }
 
 Game::~Game() {
@@ -25,11 +28,24 @@ Mino& Game::getActiveMino() {
 	return this->activeMino;
 }
 
+Mino& Game::getNextMino() {
+	return this->nextMino;
+}
+
+void Game::setActiveMino(Mino mino) {
+	this->activeMino = mino;
+}
+
+void Game::setNextMino(Mino mino) {
+	this->nextMino = mino;
+}
+
 void Game::render() {
 	Global::renderer->setDrawColor(0x00, 0x00, 0x00, 0x00);
 	Global::renderer->renderClear();
 	this->ui.renderUI();
 	this->activeMino.render();
+	this->nextMino.renderAsNext();
 	for (auto& mino : this->lockedMinos) {
 		mino.render();
 	}
@@ -63,4 +79,8 @@ void Game::handleEvent(SDL_Event& e) {
 			Global::dropRate = 500;
 		}
 	}
+}
+
+Mino Game::spawnMino() {
+	return this->spawner.spawnMino();
 }

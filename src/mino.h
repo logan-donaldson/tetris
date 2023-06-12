@@ -13,6 +13,7 @@ public:
 	~Mino();
 	
 	void render();
+	void renderAsNext();
 
 	bool getFrozen();
 	char getShape();
@@ -29,6 +30,8 @@ private:
 	std::vector<std::vector<bool>> layout;
 
 	void rotateHelper();
+	bool checkWallCollision();
+	bool checkMinoCollision(Mino other);
 };
 
 #endif

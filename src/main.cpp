@@ -3,6 +3,7 @@
 #include <SDL_ttf.h>
 #include <iostream>
 #include <atomic>
+#include <time.h>
 #include "main.h"
 #include "window.h"
 #include "util.h"
@@ -15,6 +16,7 @@ std::atomic<Uint32> Global::dropRate = 500;
 
 int main(int argc, char* argv[]) { 
 	std::cout << "Hello SDL\n";
+	srand(time(NULL));
 	
 	if (!init()) return -1;
 
@@ -32,6 +34,11 @@ int main(int argc, char* argv[]) {
 		}
 		if (!Global::window->getMinimized()) {
 			Global::game->render();
+		}
+		if (Global::game->getActiveMino().getFrozen()) {
+			Global::game->addMino(Global::game->getActiveMino());
+			Global::game->setActiveMino(Global::game->getNextMino());
+			Global::game->setNextMino(Global::game->spawnMino());
 		}
 	}
 

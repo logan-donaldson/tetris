@@ -23,6 +23,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\mino.cpp" />
     <ClCompile Include="src\renderer.cpp" />
+    <ClCompile Include="src\spawner.cpp" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\ui.cpp" />
     <ClCompile Include="src\util.cpp" />
@@ -33,6 +34,7 @@
     <ClInclude Include="src\main.h" />
     <ClInclude Include="src\mino.h" />
     <ClInclude Include="src\renderer.h" />
+    <ClInclude Include="src\spawner.h" />
     <ClInclude Include="src\texture.h" />
     <ClInclude Include="src\ui.h" />
     <ClInclude Include="src\util.h" />
