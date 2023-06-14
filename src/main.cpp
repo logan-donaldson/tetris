@@ -8,23 +8,29 @@
 #include "window.h"
 #include "util.h"
 #include "ui.h"
+#include "timer.h"
 
 Window* Global::window{nullptr};
 Renderer* Global::renderer{nullptr};
 Game* Global::game{nullptr};
+Timer* Global::timer{nullptr};
 std::atomic<Uint32> Global::dropRate = 500;
 
 int main(int argc, char* argv[]) { 
 	std::cout << "Hello SDL\n";
-	srand(time(NULL));
+	srand((unsigned int) time(NULL));
 	
 	if (!init()) return -1;
 
-	SDL_TimerID timerID = SDL_AddTimer(Global::dropRate, dropCallback, nullptr);
-
 	bool quit{ false };
 	SDL_Event e{ };
+	Global::timer->start();
 	while (!quit) {
+		if (Global::timer->getTicks() >= Global::dropRate) {
+			Global::timer->stop();
+			Global::game->dropMino();
+			Global::timer->start();
+		}
 		while (SDL_PollEvent(&e)) {
 			if (e.type == SDL_QUIT) quit = true;
 			Global::window->handleEvent(e);
@@ -36,13 +42,13 @@ int main(int argc, char* argv[]) {
 			Global::game->render();
 		}
 		if (Global::game->getActiveMino().getFrozen()) {
+			std::cout << "frozen";
 			Global::game->addMino(Global::game->getActiveMino());
 			Global::game->setActiveMino(Global::game->getNextMino());
 			Global::game->setNextMino(Global::game->spawnMino());
 		}
 	}
 
-	SDL_RemoveTimer(timerID);
 	clean();
 	return 0;
 }

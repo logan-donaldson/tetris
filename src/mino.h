@@ -16,12 +16,15 @@ public:
 	void renderAsNext();
 
 	bool getFrozen();
-	char getShape();
+	void setFrozen(bool val);
 	std::pair<int, int> getLocation();
 	std::vector<std::vector<bool>> getLayout();
 
 	Mino rotate(bool clockwise);
 	Mino translate(char dir);
+
+	bool checkWallCollision();
+	bool checkMinoCollision(Mino other);
 
 private:
 	bool frozen;
@@ -30,8 +33,6 @@ private:
 	std::vector<std::vector<bool>> layout;
 
 	void rotateHelper();
-	bool checkWallCollision();
-	bool checkMinoCollision(Mino other);
 };
 
 #endif

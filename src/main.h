@@ -5,6 +5,7 @@
 #include "window.h"
 #include "renderer.h"
 #include "game.h"
+#include "timer.h"
 
 struct Global {
 	const static int BLOCK_SIZE{ 32 };
@@ -15,6 +16,7 @@ struct Global {
 	static Window* window;
 	static Renderer* renderer;
 	static Game* game;
+	static Timer* timer;
 };
 
 #endif

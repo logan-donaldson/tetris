@@ -6,11 +6,7 @@
 #include "main.h"
 #include "window.h"
 #include "util.h"
-
-Uint32 dropCallback(Uint32 interval, void* param) {
-	Global::game->getActiveMino().translate('D');
-	return Global::dropRate;
-}
+#include "timer.h"
 
 bool init() {
 
@@ -49,6 +45,8 @@ bool init() {
 	Global::game = new Game();
 	if (!Global::game->init()) return false;
 
+	Global::timer = new Timer();
+
 	return true;
 }
 
@@ -62,9 +60,12 @@ void clean() {
 	Global::game->free();
 	delete Global::game;
 
+	delete Global::timer;
+
 	Global::window = nullptr;
 	Global::renderer = nullptr;
 	Global::game = nullptr;
+	Global::timer = nullptr;
 
 	TTF_Quit();
 	IMG_Quit();

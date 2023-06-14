@@ -1,6 +1,7 @@
 #include "mino.h"
 #include "main.h"
 #include <iostream>
+#include <vector>
 
 Mino::Mino() {
 	this->shape = 'I';
@@ -73,9 +74,13 @@ bool Mino::getFrozen() {
 	return this->frozen;
 }
 
+void Mino::setFrozen(bool val) {
+	this->frozen = val;
+}
+
 void Mino::render() {
-	for (size_t i = 0; i < this->layout.size(); ++i) {
-		for (size_t j = 0; j < this->layout[i].size(); ++j) {
+	for (int i = 0; i < this->layout.size(); ++i) {
+		for (int j = 0; j < this->layout[i].size(); ++j) {
 			if (this->layout[i][j]) {
 				int y = Global::BUFFER + (Global::BLOCK_SIZE * (this->location.second + i));
 				if (y > 0) {
@@ -145,8 +150,8 @@ void Mino::renderAsNext() {
 		default:
 			break;
 	}
-	for (size_t i = 0; i < tempLayout.size(); ++i) {
-		for (size_t j = 0; j < tempLayout[i].size(); ++j) {
+	for (int i = 0; i < tempLayout.size(); ++i) {
+		for (int j = 0; j < tempLayout[i].size(); ++j) {
 			if (tempLayout[i][j]) {
 				int y = 10 + (Global::BLOCK_SIZE * i) + locy;
 				int x = (Global::BLOCK_SIZE * j) + locx;
@@ -172,18 +177,10 @@ void Mino::rotateHelper() {
 Mino Mino::rotate(bool clockwise) {
 	if (clockwise) {
 		this->rotateHelper();
-		if (this->checkWallCollision()) {
-			this->rotateHelper();
-			this->rotateHelper();
-			this->rotateHelper();
-		}
 	} else {
 		this->rotateHelper();
 		this->rotateHelper();
 		this->rotateHelper();
-		if (this->checkWallCollision()) {
-			this->rotateHelper();
-		}
 	}
 	return *this;
 }
@@ -192,18 +189,15 @@ Mino Mino::translate(char dir) {
 	switch (dir) {
 		case 'L':
 			this->location.first -= 1;
-			if (this->checkWallCollision())
-				this->location.first += 1;
 			break;
 		case 'R':
 			this->location.first += 1;
-			if (this->checkWallCollision())
-				this->location.first -= 1;
 			break;
 		case 'D':
 			this->location.second += 1;
-			if (this->checkWallCollision())
-				this->location.second -= 1;
+			break;
+		case 'U':
+			this->location.second -= 1;
 			break;
 		default:
 			break;
@@ -220,11 +214,7 @@ bool Mino::checkWallCollision() {
 				int top = Global::BUFFER + (Global::BLOCK_SIZE * (this->location.second + i));
 				int right = left + Global::BLOCK_SIZE;
 				int bottom = top + Global::BLOCK_SIZE;
-				if (bottom > Global::BUFFER + 20 * Global::BLOCK_SIZE) {
-					this->frozen = true;
-					return true;
-				}
-				if (left < Global::BUFFER || right > Global::BUFFER + 10 * Global::BLOCK_SIZE) {
+				if (bottom > Global::BUFFER + 20 * Global::BLOCK_SIZE || left < Global::BUFFER || right > Global::BUFFER + 10 * Global::BLOCK_SIZE) {
 					return true;
 				}
 			}
@@ -233,7 +223,26 @@ bool Mino::checkWallCollision() {
 	return false;
 }
 
+std::vector<std::vector<bool>> Mino::getLayout() {
+	return this->layout;
+}
+
 bool Mino::checkMinoCollision(Mino other) {
-// Use location and see if any of the true valuies in the layout overlap
-	return true;
+	for (int i = 0; i < this->layout.size(); ++i) {
+		for (int j = 0; j < this->layout[i].size(); ++j) {
+			for (int k = 0; k < other.getLayout().size(); ++k) {
+				for (int l = 0; l < other.getLayout()[k].size(); ++l) {
+					int locx{ this->location.first + i };
+					int locy{ this->location.second + j };
+					int olocx{ other.getLocation().first + k };
+					int olocy{ other.getLocation().second + l };
+					bool condition{ (locx == olocx) && (locy == olocy) };
+					if (condition && this->layout[i][j] && other.getLayout()[k][l]) {
+						return true;
+					}
+				}
+			}
+		}
+	}
+	return false;
 }

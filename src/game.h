@@ -19,6 +19,8 @@ class Game {
 		void setActiveMino(Mino mino);
 		void setNextMino(Mino mino);
 		Mino spawnMino();
+		bool checkCollisions();
+		void dropMino();
 
 	private:
 		Ui ui;

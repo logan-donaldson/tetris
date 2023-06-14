@@ -25,6 +25,7 @@
     <ClCompile Include="src\renderer.cpp" />
     <ClCompile Include="src\spawner.cpp" />
     <ClCompile Include="src\texture.cpp" />
+    <ClCompile Include="src\timer.cpp" />
     <ClCompile Include="src\ui.cpp" />
     <ClCompile Include="src\util.cpp" />
     <ClCompile Include="src\window.cpp" />
@@ -36,6 +37,7 @@
     <ClInclude Include="src\renderer.h" />
     <ClInclude Include="src\spawner.h" />
     <ClInclude Include="src\texture.h" />
+    <ClInclude Include="src\timer.h" />
     <ClInclude Include="src\ui.h" />
     <ClInclude Include="src\util.h" />
     <ClInclude Include="src\window.h" />

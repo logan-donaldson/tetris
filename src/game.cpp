@@ -2,6 +2,7 @@
 #include "game.h"
 #include "ui.h"
 #include "spawner.h"
+#include "mino.h"
 #include <iostream>
 
 Game::Game() {
@@ -60,15 +61,23 @@ void Game::handleEvent(SDL_Event& e) {
 	if (e.type == SDL_KEYDOWN) {
 		if (e.key.keysym.sym == SDLK_d) {
 			this->activeMino.rotate(true);
+			if (this->checkCollisions())
+				this->activeMino.rotate(false);
 		}
 		if (e.key.keysym.sym == SDLK_a) {
 			this->activeMino.rotate(false);
+			if (this->checkCollisions())
+				this->activeMino.rotate(true);
 		}
 		if (e.key.keysym.sym == SDLK_LEFT) {
 			this->activeMino.translate('L');
+			if (this->checkCollisions())
+				this->activeMino.translate('R');
 		}
 		if (e.key.keysym.sym == SDLK_RIGHT) {
 			this->activeMino.translate('R');
+			if (this->checkCollisions())
+				this->activeMino.translate('L');
 		}
 		if (e.key.keysym.sym == SDLK_DOWN) {
 			Global::dropRate = 100;
@@ -83,4 +92,26 @@ void Game::handleEvent(SDL_Event& e) {
 
 Mino Game::spawnMino() {
 	return this->spawner.spawnMino();
+}
+
+bool Game::checkCollisions() {
+	if (this->activeMino.checkWallCollision()) {
+		return true;
+	}
+
+	for (Mino mino : this->lockedMinos) {
+		if (this->activeMino.checkMinoCollision(mino)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void Game::dropMino() {
+	Global::game->getActiveMino().translate('D');
+	if (Global::game->checkCollisions()) {
+		Global::game->getActiveMino().translate('U');
+		Global::game->getActiveMino().setFrozen(true);
+	}
 }
