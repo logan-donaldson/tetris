@@ -232,11 +232,11 @@ bool Mino::checkMinoCollision(Mino other) {
 		for (int j = 0; j < this->layout[i].size(); ++j) {
 			for (int k = 0; k < other.getLayout().size(); ++k) {
 				for (int l = 0; l < other.getLayout()[k].size(); ++l) {
-					int locx{ this->location.first + i };
-					int locy{ this->location.second + j };
-					int olocx{ other.getLocation().first + k };
-					int olocy{ other.getLocation().second + l };
-					bool condition{ (locx == olocx) && (locy == olocy) };
+					int locx { this->location.first + j };
+					int locy { this->location.second + i };
+					int olocx { other.getLocation().first + l };
+					int olocy { other.getLocation().second + k };
+					bool condition { (locx == olocx) && (locy == olocy) };
 					if (condition && this->layout[i][j] && other.getLayout()[k][l]) {
 						return true;
 					}
