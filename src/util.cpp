@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <SDL_ttf.h>
 #include <iostream>
 #include <format>
@@ -42,6 +43,13 @@ bool init() {
 		return false;
 	}
 
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	{
+		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+		return false;
+
+	}
+
 	Global::game = new Game();
 	if (!Global::game->init()) return false;
 
@@ -67,6 +75,7 @@ void clean() {
 	Global::game = nullptr;
 	Global::timer = nullptr;
 
+	Mix_Quit();
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();

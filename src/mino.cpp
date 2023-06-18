@@ -5,8 +5,7 @@
 
 Mino::Mino() {
 	this->shape = 'I';
-	this->frozen = false;
-	this->location = { 3, -1 };
+	this->location = { 3, 1 };
 	this->layout = { {false, false, false, false},
 					{true, true, true, true},
 					{false, false, false, false},
@@ -15,46 +14,45 @@ Mino::Mino() {
 
 Mino::Mino(char shape) {
 	this->shape = shape;
-	this->frozen = false;
 	switch (shape) {
 		case 'I':
-			this->location = { 3, -2 };
+			this->location = { 3, 0 };
 			this->layout = { {false, false, false, false},
 							{true, true, true, true},
 							{false, false, false, false},
 							{false, false, false, false} };
 			break;
 		case 'O':
-			this->location = { 4, -2 };
+			this->location = { 4, 0 };
 			this->layout = { { true, true },
 							{true, true} };
 			break;
 		case 'T':
-			this->location = { 3, -2 };
+			this->location = { 3, 0 };
 			this->layout = { { false, false, false },
 							{false, true, false},
 							{true, true, true} };
 			break;
 		case 'Z':
-			this->location = { 3, -2 };
+			this->location = { 3, 0 };
 			this->layout = { { false, false, false },
 							{true, true, false},
 							{false, true, true} };
 			break;
 		case 'S':
-			this->location = { 3, -2 };
+			this->location = { 3, 0 };
 			this->layout = { { false, false, false },
 							{false, true, true},
 							{true, true, false} };
 			break;
 		case 'J':
-			this->location = { 3, -2 };
+			this->location = { 3, 0 };
 			this->layout = { { false, false, false },
 							{true, false, false},
 							{true, true, true} };
 			break;
 		case 'L':
-			this->location = { 3, -2 };
+			this->location = { 3, 0 };
 			this->layout = { { false, false, false },
 							{false, false, true},
 							{true, true, true} };
@@ -64,32 +62,8 @@ Mino::Mino(char shape) {
 	}
 }
 
-Mino::~Mino() { }
-
 std::pair<int, int> Mino::getLocation() {
 	return this->location;
-}
-
-bool Mino::getFrozen() {
-	return this->frozen;
-}
-
-void Mino::setFrozen(bool val) {
-	this->frozen = val;
-}
-
-void Mino::render() {
-	for (int i = 0; i < this->layout.size(); ++i) {
-		for (int j = 0; j < this->layout[i].size(); ++j) {
-			if (this->layout[i][j]) {
-				int y = Global::BUFFER + (Global::BLOCK_SIZE * (this->location.second + i));
-				if (y > 0) {
-					int x = Global::BUFFER + (Global::BLOCK_SIZE * (this->location.first + j));
-					Global::renderer->renderRect(x, y, Global::BLOCK_SIZE, Global::BLOCK_SIZE, frozen);
-				}
-			}
-		}
-	}
 }
 
 void Mino::renderAsNext() {
@@ -155,7 +129,7 @@ void Mino::renderAsNext() {
 			if (tempLayout[i][j]) {
 				int y = 10 + (Global::BLOCK_SIZE * i) + locy;
 				int x = (Global::BLOCK_SIZE * j) + locx;
-				Global::renderer->renderRect(x, y, Global::BLOCK_SIZE, Global::BLOCK_SIZE, frozen);
+				Global::renderer->renderRect(x, y, Global::BLOCK_SIZE, Global::BLOCK_SIZE, false);
 			}
 		}
 	}
@@ -205,16 +179,11 @@ Mino Mino::translate(char dir) {
 	return *this;
 }
 
-
 bool Mino::checkWallCollision() {
 	for (int i = 0; i < this->layout.size(); ++i) {
 		for (int j = 0; j < this->layout[i].size(); ++j) {
 			if (this->layout[i][j]) {
-				int left = Global::BUFFER + (Global::BLOCK_SIZE * (this->location.first + j));
-				int top = Global::BUFFER + (Global::BLOCK_SIZE * (this->location.second + i));
-				int right = left + Global::BLOCK_SIZE;
-				int bottom = top + Global::BLOCK_SIZE;
-				if (bottom > Global::BUFFER + 20 * Global::BLOCK_SIZE || left < Global::BUFFER || right > Global::BUFFER + 10 * Global::BLOCK_SIZE) {
+				if (this->location.second + i > 21 || this->location.first + j < 0 || this->location.first + j > 9) {
 					return true;
 				}
 			}
@@ -227,20 +196,15 @@ std::vector<std::vector<bool>> Mino::getLayout() {
 	return this->layout;
 }
 
-bool Mino::checkMinoCollision(Mino other) {
+void Mino::setLayout(int i, int j, bool val) {
+	this->layout[i][j] = val;
+}
+
+bool Mino::checkMinoCollision() {
 	for (int i = 0; i < this->layout.size(); ++i) {
 		for (int j = 0; j < this->layout[i].size(); ++j) {
-			for (int k = 0; k < other.getLayout().size(); ++k) {
-				for (int l = 0; l < other.getLayout()[k].size(); ++l) {
-					int locx { this->location.first + j };
-					int locy { this->location.second + i };
-					int olocx { other.getLocation().first + l };
-					int olocy { other.getLocation().second + k };
-					bool condition { (locx == olocx) && (locy == olocy) };
-					if (condition && this->layout[i][j] && other.getLayout()[k][l]) {
-						return true;
-					}
-				}
+			if (this->location.second + i >= 2 && this->layout[i][j] && Global::game->getBoard()[this->location.second + i][this->location.first + j] == 1) {
+				return true;
 			}
 		}
 	}

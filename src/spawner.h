@@ -7,7 +7,6 @@
 class Spawner {
 	public:
 		Spawner();
-		~Spawner();
 		Mino spawnMino();
 	private:
 		std::vector<char> minoVec;

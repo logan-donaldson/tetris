@@ -1,9 +1,11 @@
 #ifndef GAME_H
 #define GAME_H
 #include <list>
+#include <vector>
 #include "mino.h"
 #include "ui.h"
 #include "spawner.h"
+#include "mixer.h"
 
 class Game {
 	public:
@@ -13,7 +15,6 @@ class Game {
 		void free();
 		void render();
 		void handleEvent(SDL_Event& e);
-		void addMino(Mino mino);
 		Mino& getActiveMino();
 		Mino& getNextMino();
 		void setActiveMino(Mino mino);
@@ -21,13 +22,21 @@ class Game {
 		Mino spawnMino();
 		bool checkCollisions();
 		void dropMino();
+		int checkLines();
+		std::vector<std::vector<int>>& getBoard();
 
 	private:
 		Ui ui;
 		Mino activeMino;
 		Mino nextMino;
-		std::list<Mino> lockedMinos;
 		Spawner spawner;
+		std::vector<std::vector<int>> board;
+		bool running;
+		Mixer mixer;
+
+		void updateBoard(bool freeze);
+		void restart();
+		
 };
 
 #endif

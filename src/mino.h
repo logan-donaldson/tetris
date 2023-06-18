@@ -10,24 +10,20 @@ class Mino {
 public:
 	Mino();
 	Mino(char shape);
-	~Mino();
 	
-	void render();
 	void renderAsNext();
 
-	bool getFrozen();
-	void setFrozen(bool val);
 	std::pair<int, int> getLocation();
 	std::vector<std::vector<bool>> getLayout();
+	void setLayout(int i, int j, bool val);
 
 	Mino rotate(bool clockwise);
 	Mino translate(char dir);
 
 	bool checkWallCollision();
-	bool checkMinoCollision(Mino other);
+	bool checkMinoCollision();
 
 private:
-	bool frozen;
 	char shape;
 	std::pair<int, int> location;
 	std::vector<std::vector<bool>> layout;

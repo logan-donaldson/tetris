@@ -14,7 +14,7 @@ Window* Global::window{nullptr};
 Renderer* Global::renderer{nullptr};
 Game* Global::game{nullptr};
 Timer* Global::timer{nullptr};
-std::atomic<Uint32> Global::dropRate = 500;
+Uint32 Global::dropRate = 500;
 
 int main(int argc, char* argv[]) { 
 	std::cout << "Hello SDL\n";
@@ -40,12 +40,6 @@ int main(int argc, char* argv[]) {
 		}
 		if (!Global::window->getMinimized()) {
 			Global::game->render();
-		}
-		if (Global::game->getActiveMino().getFrozen()) {
-			std::cout << "frozen";
-			Global::game->addMino(Global::game->getActiveMino());
-			Global::game->setActiveMino(Global::game->getNextMino());
-			Global::game->setNextMino(Global::game->spawnMino());
 		}
 	}
 

@@ -15,6 +15,8 @@ Ui::Ui() {
 	this->rText = Texture();
 	this->iText = Texture();
 	this->sText = Texture();
+	this->curScoreText = Texture();
+	this->restartText = Texture();
 }
 
 Ui::~Ui() { 
@@ -35,7 +37,9 @@ bool Ui::init() {
 		!this->eText.loadFromRenderedText("E", textColor, this->bigFont) ||
 		!this->rText.loadFromRenderedText("R", textColor, this->bigFont) ||
 		!this->iText.loadFromRenderedText("I", textColor, this->bigFont) ||
-		!this->sText.loadFromRenderedText("S", textColor, this->bigFont)) {
+		!this->sText.loadFromRenderedText("S", textColor, this->bigFont) ||
+		!this->curScoreText.loadFromRenderedText(std::to_string(this->curScore), textColor, this->smallFont) ||
+		!this->restartText.loadFromRenderedText("Press 'R' to Restart", textColor, this->smallFont)) {
 		printf("Failed to render text texture!\n");
 		return false;
 	}
@@ -54,18 +58,25 @@ void Ui::free() {
 	this->rText.free();
 	this->iText.free();
 	this->sText.free();
+	this->curScoreText.free();
+	this->restartText.free();
 }
 
 int Ui::getCurScore() {
 	return this->curScore;
 }
 
-void Ui::renderUI() {
+void Ui::renderUI(bool running) {
+	if (!running) {
+		restartText.render(Global::window->getWidth() / 2 - restartText.getWidth() / 2, Global::window->getHeight() / 2 - restartText.getHeight() / 2);
+		return;
+	}
 	Global::renderer->renderRect(Global::Global::BUFFER, Global::BUFFER, 10*Global::BLOCK_SIZE, 20*Global::BLOCK_SIZE, false);
 	Global::renderer->renderRect(20 + (10*Global::BLOCK_SIZE) + Global::BUFFER, Global::BUFFER, 100, 100, false);
 	Global::renderer->renderRect(20 + (10 * Global::BLOCK_SIZE) + Global::BUFFER, Global::BUFFER + 100 + Global::BUFFER, 100, 200, false);
 	scoreText.render(Global::BUFFER + (10 * Global::BLOCK_SIZE) + Global::BUFFER + 4, Global::BUFFER + 1);
 	nextText.render(Global::BUFFER + (10 * Global::BLOCK_SIZE) + Global::BUFFER + 13, Global::BUFFER + 100 + Global::BUFFER + 2);
+	this->curScoreText.render(Global::BUFFER + (10 * Global::BLOCK_SIZE) + Global::BUFFER + 50 - curScoreText.getWidth() / 2, Global::BUFFER + 1 + scoreText.getHeight() + curScoreText.getHeight() / 2);
 	int letterBuffer{ 0 };
 	tText.render(Global::BUFFER + (10 * Global::BLOCK_SIZE) + Global::BUFFER + 50 - tText.getWidth() / 2, Global::BUFFER + 100 + Global::BUFFER + 200 + Global::BUFFER);
 	letterBuffer += tText.getHeight() + 5;
@@ -78,5 +89,10 @@ void Ui::renderUI() {
 	iText.render(Global::BUFFER + (10 * Global::BLOCK_SIZE) + Global::BUFFER + 50 - iText.getWidth() / 2, Global::BUFFER + 100 + Global::BUFFER + 200 + Global::BUFFER + letterBuffer);
 	letterBuffer += sText.getHeight() + 5;
 	sText.render(Global::BUFFER + (10 * Global::BLOCK_SIZE) + Global::BUFFER + 50 - sText.getWidth() / 2, Global::BUFFER + 100 + Global::BUFFER + 200 + Global::BUFFER + letterBuffer);
+}
+
+void Ui::incrementCurScore(int inc) {
+	this->curScore += inc;
+	this->curScoreText.loadFromRenderedText(std::to_string(this->curScore), { 0xFF, 0xFF, 0xFF }, this->smallFont);
 }
 

@@ -9,14 +9,16 @@ public:
 	Ui();
 	~Ui();
 	bool init();
-	void renderUI();
+	void renderUI(bool running);
 	void free();
 	int getCurScore();
+	void incrementCurScore(int inc);
+
 private:
 	int curScore;
 	TTF_Font* smallFont;
 	TTF_Font* bigFont;
-	Texture scoreText, nextText, tText, eText, rText, iText, sText;
+	Texture scoreText, nextText, tText, eText, rText, iText, sText, curScoreText, restartText;
 };
 
 #endif
